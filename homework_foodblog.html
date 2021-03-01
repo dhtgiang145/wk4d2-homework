@@ -64,12 +64,12 @@
       section#blogposts {
         position: absolute;
         left: 20%;
-        top: 70px;
-        padding: 50px;
+        top: 50px;
+        padding: 30px;
       }
       main .post {
         margin: 25px;
-        padding: 25px;
+        padding: 20px;
         border: 2px solid rgba(83, 78, 58, 0.6);
         border-radius: 0.5em;
       }
@@ -84,6 +84,20 @@
       #blogposts img {
         width: 2em;
         height: 2em;
+      }
+      #modal {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        left: 35%;
+        top: 250px;
+        width: 300px;
+        padding: 10px;
+        visibility: hidden;
+      }
+      #close {
+        float: right;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -104,8 +118,20 @@
         </div>
 
         <section id="blogposts">
-          <blog-component v-for="blog in blogs" :blog="blog"></blog-component>
-          <p></p>
+          <div class="post" v-for="blog in blogs" :blog="blog">
+            <img v-on:click="showbox" :src="blog.image" />
+            <span>{{blog.author}}</span>
+            <span>{{blog.date}}</span>
+            <span>{{blog.reply}}</span>
+            <p>{{blog.content}}</p>
+          </div>
+          <div id="modal" v-for="blog in blogs" :blog="blog">
+            <div id="close" v-on:click="closebox">X</div>
+            <h3>{{blog.author}}</h3>
+            <b>Foodie Level:</b> {{blog.foodie}}
+            <h4>Bio:</h4>
+            <p>{{blog.bio}}</p>
+          </div>
         </section>
       </main>
 
@@ -131,8 +157,8 @@
     const blogs = [
       {
         author: "Brianna",
-        img: "profile.png",
         foodie: "Novice",
+        image: "profile.png",
         bio:
           "Food enthusiast. Love to cook and experiment. Into only organic, fat free, sugar free stuffs!",
         date: "February 18, 2021 @ 3:30 pm",
@@ -142,8 +168,8 @@
       },
       {
         author: "LINH",
-        img: "profile.png",
         foodie: "Newcomer",
+        image: "profile.png",
         bio:
           "Love food! Grew up with meat and potatoes. Recently venture outside my comfort zone. Loving everything I have been eating so far. Thai is my favorite at this time.",
         date: "February 15, 2021 @ 9:46 am",
@@ -153,8 +179,8 @@
       },
       {
         author: "CATHERINE LEONARDO",
-        img: "profile.png",
         foodie: "Mentor",
+        image: "profile.png",
         bio:
           "I have to say I never was the adventurous type until 2 years ago. My boyfriend, who is of Japanese background, exposed me to other cultural food and I have never look back since!",
         date: "February 13, 2021 @ 12:58 pm",
@@ -164,8 +190,8 @@
       },
       {
         author: "KALI",
-        img: "profile.png",
         foodie: "Novice",
+        image: "profile.png",
         bio:
           "Food is my passion. So is cooking. I love to experiment and try new things. I have to admit I'm a food whore! Invite me over for dinner and I'll be there!",
         date: "February 13, 2021 @ 12:58 pm",
@@ -175,18 +201,15 @@
       },
     ];
 
-    Vue.component("blog-component", {
-      template:
-        "<div class='post'><div class='profileimg'><img v-on:click='box' :src='blog.img'><span class='author'> {{blog.author}}</span><span class='date'> — {{blog.date}}</span><span class='reply'> {{blog.reply}}</span></div><p>{{blog.content}}</p></div>",
-      props: { blog: Object },
-    });
-
     var app = new Vue({
       el: "#blogposts",
       data: { blogs },
       methods: {
-        box: function () {
-          alert("test");
+        showbox: function () {
+          document.getElementById("modal").style.visibility = "visible";
+        },
+        closebox: function () {
+          document.getElementById("modal").style.visibility = "hidden";
         },
       },
     });
